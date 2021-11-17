@@ -1,0 +1,10 @@
+def trace_road(self, x,y, side):
+	side_con = self._map[(x, y)].get_road_connection(side)
+	side_dir = self.trace_road_one_direction(x,y, side)
+	other_dir = self.trace_road_one_direction(x,y, side_con)
+	retval = [self._map[(x,y)]]
+	for val in side_dir:
+		retval.append(val)
+	for val in other_dir:
+		retval.append(val)
+	return retval
