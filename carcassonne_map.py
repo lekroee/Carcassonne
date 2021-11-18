@@ -181,6 +181,8 @@ class CarcassonneMap:
         side_dir = self.trace_road_one_direction(x,y, side)
         other_dir = self.trace_road_one_direction(x,y, side_con)
         retval = []
+        # Doesn't work for vertical traces. Try manually tracing road algo
+        TODO
         if side == 3:
             other_dir = sorted(other_dir, reverse=True)
             side_dir = sorted(side_dir, reverse=True)
@@ -188,6 +190,8 @@ class CarcassonneMap:
             other_dir = sorted(other_dir)
             side_dir = sorted(side_dir)
         for val in other_dir:
+            # Doesn't account for empty other_dir/may unnecessarily add extra values
+            TODO
             new_val = (val[0], val[1], val[3], val[2])
             retval.append(new_val)
         retval.append((x,y, side_con, side))
@@ -204,11 +208,18 @@ class CarcassonneMap:
             tmp = set()
             for val in known_city:
                 next_tile_coords = self._get_next_tile(val[0],val[1], val[2])
+                # Don't return because there might be other tiles beyond the open city edge
+                # only accessible through that tile. Have separate bool?
+                TODO
                 if next_tile_coords not in self._map:
                     return (False, known_city)
                 city_on_tile = self._check_city_connect(val[0], val[1], val[2])
                 city_on_next = self._check_city_connect(next_tile_coords[0], next_tile_coords[1],
                                                         self._get_opposite(val[2]))
+                
+                # Check complement if city_on_tile and city_on_next instead of length to avoid infinite loop
+                # Add complement to known_city
+                TODO
                 if len(city_on_tile) > 0 or len(city_on_next) > 0:
                     known_city = set.union(known_city, city_on_tile)
                     known_city = set.union(known_city, city_on_next)
@@ -218,6 +229,8 @@ class CarcassonneMap:
     def _check_city_connect(self, x,y, side):
         retval = set()
         for i in range(4):
+            # Allow same side add for first tile/ set wont allow double add anyway
+            TODO
             if i == side:
                 continue
             if self._map[(x,y)].city_connects(side, i):
